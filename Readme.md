@@ -67,10 +67,4 @@
 
 ### 开源地址
 
-
-## 公众号
-框架的详细教程请关注微信公众号：梦无矶的测试开发之路
-
-**二维码**
-
-![image-微信公众号](logs/梦无矶的测试开发之路.png)
+https://github.com/Lvan826199/XiaoZaiMultiAutoAiDevices
