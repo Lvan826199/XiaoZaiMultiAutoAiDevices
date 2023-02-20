@@ -1,0 +1,5 @@
+airtest==1.2.6
+poco==0.99.1
+pocoui==1.0.87
+tidevice==0.9.11
+unittestreport==1.5.1
