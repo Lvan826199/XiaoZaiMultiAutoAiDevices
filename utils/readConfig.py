@@ -23,10 +23,11 @@ parentPath = os.path.abspath(os.path.dirname(inspect.getfile(inspect.currentfram
 # 获取当前项目的根路径
 rootPath = os.path.abspath(os.path.dirname(parentPath) + os.path.sep + ".")
 # 获取config.ini文件路径
-configPath = rootPath + "\settings\config.ini"
+# configPath = rootPath + "\settings\config.ini"
+configPath = os.path.join(rootPath , "settings","config.ini")
 # 初始化配置文件
 configFile = configparser.ConfigParser()
-configFile.read(configPath, encoding="utf-8")
+configFile.read(configPath, encoding='UTF-8-sig')
 
 # 获取TestCaseforDevice下的所有设备uuid及对应的用例，多个用例用逗号分隔
 def getAllTestCase():
@@ -88,6 +89,6 @@ def delOptionConfig(section,option):
         raise f"填写的{option}不存在于{section}下!"
 
 if __name__ == '__main__':
-    print(addConfig("test","xiaozai",'666'))
-    # print(getAllTestCase())
+    # print(addConfig("test","xiaozai",'666'))
+    print(getAllTestCase())
     # print(getAllTestCase()['00008110-000275943eeb801e'])
