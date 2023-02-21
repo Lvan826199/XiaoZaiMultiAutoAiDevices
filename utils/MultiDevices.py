@@ -97,7 +97,7 @@ class MultiDevices():
     # 获取用例的指定文件夹
     def get_SpCaseFolder(self):
         # 获取TestCase下的文件夹
-        TestCasePath = f'{self.rootPath}\\TestCase'
+        TestCasePath = os.path.join(self.rootPath,'TestCase')
         ChildFolderList = []
         for root, dirs, files in os.walk(TestCasePath, topdown=False):
             ChildFolderList.append(root)
@@ -107,7 +107,13 @@ class MultiDevices():
                 return TestCasePath
             else:
                 for ChildFolder in ChildFolderList:
-                    folderName = ChildFolder.split('\\')[-1].lower()
+                    if '\\' in ChildFolderList:
+                        folderName = ChildFolder.split('\\')[-1].lower()
+                    elif '/' in ChildFolderList:
+                        folderName = ChildFolder.split('/')[-1].lower()
+                    else:
+                        print(f"{ChildFolder} ： 路径匹配错误，请查看路径斜杆是否正确！")
+                        return None
                     if getSpCaseFolderList[0] == folderName:
                         return ChildFolder
                 else:
