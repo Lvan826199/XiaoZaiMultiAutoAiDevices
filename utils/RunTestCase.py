@@ -34,14 +34,17 @@ def RunTestCase(MD,start):
     testCaseList = MD.get_testCaseWhichRun(device_id)
     print("{}的待测用例为：{}".format(MD.get_mdevice(),testCaseList))
     SpCaseFolderPath = MD.get_SpCaseFolder()
-    SpCaseFolderName = str(SpCaseFolderPath).split('\\')[-1]
+    if '\\' in  str(SpCaseFolderPath):
+        SpCaseFolderName = str(SpCaseFolderPath).split('\\')[-1]
+    else:
+        SpCaseFolderName = str(SpCaseFolderPath).split('/')[-1]
 
 
     # 没有测试用例，直接不出报告
     # 未对All选项的测试集进行适配，只适配了单个文件夹下的，如果不需要传参数进入TestCase，则可以不用适配（有生之年我可能会适配一下）
     if testCaseList:
         suite = unittest.TestSuite()
-        discover = unittest.defaultTestLoader.discover(start_dir=SpCaseFolderPath)
+        discover = unittest.defaultTestLoader.discover(start_dir=SpCaseFolderPath,pattern='TEST*.py')
         for test_suite in discover:
             try:
                 test_suite_py_name = str(test_suite._tests[0]).split('tests=[<')[1].split('.')[0].strip()
@@ -57,6 +60,7 @@ def RunTestCase(MD,start):
                 x = locals()
                 suite.addTest(ParameterizedTestCase.parameterize(eval(x['test_class_name']),device_id=device_id))
 
+        # 对设备进行重命名,生成的测试报告以这个名字为标题，默认为设备ID
         if MD.get_nickname() == '00008101-001859DE1E38001E':  # SH-SJ-0123
             reportName = 'SH-SJ-0123'
         elif MD.get_nickname() == '00008030-001E19021A42802E':  #  #SH-SJ-0186

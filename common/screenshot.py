@@ -37,9 +37,13 @@ def iosScreenshot(devices,action):
         devices_name = devices
     imagesPath = makeImagesFolder()
     nowtime = datetime.now().strftime("%Y%m%d%H%M%S")
-    path = imagesPath + "\\" +  str(nowtime) +  "_" +  devices_name + "_" + action+ ".jpg"
+    # path = imagesPath + "\\" +  str(nowtime) +  "_" +  devices_name + "_" + action+ ".jpg"
+    path = os.path.join(imagesPath ,str(nowtime) +  "_" +  devices_name + "_" + action+ ".jpg")
     snapshot(filename=path,msg=action, quality=90, max_size=800)
-    hrefPath = '\\'.join(path.split('\\')[-2:])
+    if '\\' in path:
+        hrefPath = '\\'.join(path.split('\\')[-2:])
+    else:
+        hrefPath = '/'.join(path.split('/')[-2:])
     print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime()),"<img src='" + hrefPath + "' height='500px' />")
 
 
@@ -64,9 +68,13 @@ def screenShotHref(poco,testName):
     '''
     nowTime = datetime.now().strftime("%Y%m%d%H%M%S")
     path = makeImagesFolder()
-    imgPath = path + f'\\{testName}_' + nowTime
+    # imgPath = path + f'\\{testName}_' + nowTime
+    imgPath = os.path.join(path , f'{testName}_' , nowTime)
     path_2 = screenShot(poco=poco,imgPath=imgPath)  # 不需要带图片的后缀
-    href = '\\'.join(path_2.split('\\')[-2:])
+    if "\\" in path_2:
+        href = '\\'.join(path_2.split('\\')[-2:])
+    else:
+        href = '/'.join(path_2.split('/')[-2:])
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()), "<img src='" + href + "' height='500px' />")
 
 

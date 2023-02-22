@@ -77,7 +77,10 @@ def xz_log():
     base_log_path = os.getcwd()
     # 支持在本文件main方法调用调试，logs依然在根目录下的logs下
     if 'utils' in base_log_path:
-        base_log_path = base_log_path.split('\\utils')[0]
+        if '\\' in base_log_path:
+            base_log_path = base_log_path.split('\\utils')[0]
+        else:
+            base_log_path = base_log_path.split('/utils')[0]
     file = str(file_exsits(f"{base_log_path}/logs/" + dt_ms + "_log"))
     s = os.popen("adb devices")
     a = s.read()
@@ -91,35 +94,40 @@ def xz_log():
     for devices in deviceList:
         print(devices)
         ###抓取logcat日志###
-        logcat_filename = file+"\\" + devices +"_"+ dt_ms +"_"+"logcat_log.txt"
+        # logcat_filename = file+"\\" + devices +"_"+ dt_ms +"_"+"logcat_log.txt"
+        logcat_filename = os.path.join(file,devices +"_"+ dt_ms +"_"+"logcat_log.txt")
         logcat_file = open(logcat_filename, 'w')
         logcmd = "adb -s "+ devices +" logcat "
         Poplog = subprocess.Popen(logcmd, stdout=logcat_file, stderr=subprocess.PIPE)
         sleep(2)
         Poplog.terminate()
         ###抓取Radio日志###
-        radio_filename = file+"\\"  + devices + "_" + dt_ms + "_" + "radio_log.txt"
+        # radio_filename = file+"\\"  + devices + "_" + dt_ms + "_" + "radio_log.txt"
+        radio_filename = os.path.join(file , devices + "_" + dt_ms + "_" + "radio_log.txt")
         logcat_file = open(radio_filename, 'w')
         logcmd = "adb -s " + devices + " logcat -b radio "
         Poplog = subprocess.Popen(logcmd, stdout=logcat_file, stderr=subprocess.PIPE)
         sleep(2)
         Poplog.terminate()
         ###抓取Main日志###
-        main_filename = file+"\\"  + devices + "_" + dt_ms + "_" + "main_log.txt"
+        # main_filename = file+"\\"  + devices + "_" + dt_ms + "_" + "main_log.txt"
+        main_filename = os.path.join( file , devices + "_" + dt_ms + "_" + "main_log.txt")
         logcat_file = open(main_filename, 'w')
         logcmd = "adb -s " + devices + " logcat -b main "
         Poplog = subprocess.Popen(logcmd, stdout=logcat_file, stderr=subprocess.PIPE)
         sleep(2)
         Poplog.terminate()
         ###抓取Event日志###
-        event_filename = file+"\\"   + devices + "_" + dt_ms + "_" + "event_log.txt"
+        # event_filename = file+"\\"   + devices + "_" + dt_ms + "_" + "event_log.txt"
+        event_filename = os.path.join(file , devices + "_" + dt_ms + "_" + "event_log.txt")
         logcat_file = open(event_filename, 'w')
         logcmd = "adb -s " + devices + " logcat -b event "
         Poplog = subprocess.Popen(logcmd, stdout=logcat_file, stderr=subprocess.PIPE)
         sleep(2)
         Poplog.terminate()
         ###抓取kernel日志###
-        kernel_filename = file+"\\"  + devices + "_" + dt_ms + "_" + "kernel_log.txt"
+        # kernel_filename = file+"\\"  + devices + "_" + dt_ms + "_" + "kernel_log.txt"
+        kernel_filename = os.path.join(file ,devices + "_" + dt_ms + "_" + "kernel_log.txt")
         logcat_file = open(kernel_filename, 'w')
         logcmd = "adb -s " + devices + " cat /proc/kmsg"
         Poplog = subprocess.Popen(logcmd, stdout=logcat_file, stderr=subprocess.PIPE)
@@ -138,7 +146,7 @@ def ios_log(devices):
     ### 创建文件夹
     from pathlib import Path
     nowtime = time.strftime("%Y-%m-%d", time.localtime())
-    path = os.path.join(os.getcwd(), f"logs\\{nowtime}_ioslog")
+    path = os.path.join(os.getcwd(), "logs",f"{nowtime}_ioslog")
     path_1 = Path(path)
     if not path_1.exists():
         os.mkdir(path)
@@ -148,7 +156,8 @@ def ios_log(devices):
         devices_name = 'SH-SJ-0182'
     else:
         devices_name = devices
-    s = subprocess.Popen(f'tidevice -u {devices} syslog >  {path}\\{devices_name}_log.txt',shell=True)
+    logTxtPath = os.path.join(path,f'{devices_name}_log.txt')
+    s = subprocess.Popen(f'tidevice -u {devices} syslog >  {logTxtPath}',shell=True)
     print(s.pid)
     return s
 
