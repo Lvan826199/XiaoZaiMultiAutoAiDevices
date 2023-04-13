@@ -107,13 +107,12 @@ class MultiDevices():
                 return TestCasePath
             else:
                 for ChildFolder in ChildFolderList:
-                    if '\\' in ChildFolderList:
+                    if '\\' in ChildFolder:
                         folderName = ChildFolder.split('\\')[-1].lower()
-                    elif '/' in ChildFolderList:
+                    elif '/' in ChildFolder:
                         folderName = ChildFolder.split('/')[-1].lower()
                     else:
-                        print(f"{ChildFolder} ： 路径匹配错误，请查看路径斜杆是否正确！")
-                        return None
+                        folderName = "None"
                     if getSpCaseFolderList[0] == folderName:
                         return ChildFolder
                 else:
