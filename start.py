@@ -8,7 +8,7 @@
 __author__ = "梦无矶小仔"
 
 from utils import index
-
+import shutil
 
 def start():
     deleteUtilslog()
